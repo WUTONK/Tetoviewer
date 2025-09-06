@@ -1,12 +1,13 @@
 // import Versions from './components/Versions'
 // import electronLogo from './assets/electron.svg'
-import React from 'react'
-import { Layout, Nav, Button, Breadcrumb, Skeleton, Avatar } from '@douyinfe/semi-ui';
-import { IconSemiLogo, IconBell, IconHelpCircle, IconBytedanceLogo, IconHome, IconLive, IconSetting } from '@douyinfe/semi-icons';
+import React, { JSX, useState } from 'react'
+import { Image, ImagePreview,Layout, Nav, Button, Breadcrumb, Skeleton, Avatar } from '@douyinfe/semi-ui';
+import { Slider,IconSemiLogo, IconBell, IconHelpCircle, IconBytedanceLogo, IconHome, IconLive, IconSetting } from '@douyinfe/semi-icons';
 import fatassTetoIcon from './assets/icon/fatassteto_pixel.png'
 import tetoPearIcon from './assets/icon/tetopear_pixel.png'
 import svTechieIcon from './assets/icon/SvTechie_pixel.png'
 import svTechieAndTetoPearIcon from './assets/icon/tetopearAndSvTechi.png'
+import nikeland1 from './assets/img/acc/nike/nikeland_1.jpeg'
 
 function App(): React.JSX.Element {
   const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
@@ -27,6 +28,63 @@ function App(): React.JSX.Element {
     height: 64,
     lineHeight: '64px'
   }
+
+  const [activeKey, setActiveKey] = useState<string>('Home')
+
+  const renderPage = (key: string): JSX.Element => {
+    switch (key) {
+      case 'Home':
+        return <HomeContent />
+      case 'fatass':
+        return <FatassContent />
+      case 'meme':
+        return <MemeContent />
+      case 'techie':
+        return <TechieContent />
+      default:
+        return <div>Not Found</div>
+    }
+  }
+
+  // 不同 item 下的 context 组件
+  const HomeContent = () => {
+    return(
+      <div>
+        <p> hello I&apos;m Home context</p>
+      </div>
+    )
+  }
+
+  const FatassContent = () => {
+    return(
+      <div>
+        <p> hello I&apos;m FatassTeto context</p>
+        <Image
+          width={500}
+          height={100}
+          src={nikeland1}
+        />
+      </div>
+    )
+  }
+
+  const MemeContent = () => {
+    return(
+      <div>
+        <p> hello I&apos;m Home context</p>
+      </div>
+    )
+  }
+
+  const TechieContent = () => {
+    return(
+      <div>
+        <p> hello I&apos;m Home context</p>
+      </div>
+    )
+  }
+
+
 
   return (
     <>
@@ -68,20 +126,23 @@ function App(): React.JSX.Element {
           <Sider style={{background: 'rgba(var(--semi-pink-6), 1)', }}>
             <Nav
               style={{ maxWidth: 200, height: '100%' }}
-              defaultSelectedKeys={['Home']}
+              selectedKeys={[activeKey]}
               items={[
                 { itemKey: 'Home', text: 'Home', icon: <IconHome size="large" /> },
                 { itemKey: 'fatass', text: 'fatass', icon: <img src={fatassTetoIcon} alt="fatass" style={{ width: '24px', height: '24px' }} /> },
                 { itemKey: 'meme', text: 'meme', icon: <img src={tetoPearIcon} alt='tetopear' style={{width: '24px', height:'30px'}} /> },
                 { itemKey: 'techie', text: 'techie', icon: <img src={svTechieIcon} alt='svTechie' style={{width: '30px', height: '50px'}} /> },
               ]}
+              onSelect={(data) => setActiveKey(String(data.itemKey))}
               footer={{
                 collapseButton: true
               }}
             />
           </Sider>
 
-          <Content style={{ background:"rgba(var(--semi-pink-2), 1)", flex: 1 }}>Content1</Content>
+          <Content style={{ background:"rgba(var(--semi-pink-2), 1)", flex: 1 }}>
+            {renderPage(activeKey)}
+          </Content>
         </Layout>
         <Footer style={{ ...commonStyle, background: 'rgba(var(--semi-pink-3), 1)' }}>Footer</Footer>
       </Layout>

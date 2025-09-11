@@ -9,6 +9,8 @@ import svTechieIcon from './assets/icon/SvTechie_pixel.png'
 import svTechieAndTetoPearIcon from './assets/icon/tetopearAndSvTechi.png'
 import nikeland1 from './assets/img/acc/nike/nikeland_1.jpeg'
 import nikeland2 from './assets/img/acc/nike/nikeland_laugh.jpg'
+
+
 import { Percent } from 'antd/es/progress/style';
 
 function App(): React.JSX.Element {
@@ -192,39 +194,33 @@ function App(): React.JSX.Element {
     )
   }
 
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 //<<<立绘页面
   const TechieContent = () => {
-    const [notificationApi, notificationHolder] = Notification.useNotification() as [
-      {
-        success: (config: any) => string
-        info: (config: any) => string
-        error: (config: any) => string
-        warning: (config: any) => string
-        open: (config: any) => string
-        close: (instanceID: string) => void
-      },
-      React.ReactElement
-    ]
 
-    let options = {
-      title: 'Hi, Bytedance',
-      content: 'ies dance dance dance',
-      duration: 3,
+    // 立绘图片引入
+      const tachieImages = Object.values(
+        import.meta.glob('./assets/img/teto/tachie/*.{jpg,png}', {
+          eager: true,
+          import: 'default',
+        })
+      ) as string[];
+      tachieImages.sort((a, b) => a.localeCompare(b));
 
-    }
+      const [index, setIndex] = useState(0);
 
     return (
       <div>
-        <p> hello I&apos;m Techie context</p>
-        {notificationHolder}
-        <Button
-          onClick={() =>
+        <div>
+          <p> hello I&apos;m Techie context</p>
+        </div>
 
-            notificationApi.open()
-          }
-        >
-          Display Notification top
-        </Button>
+        {/* 画廊 */}
+        <div>
+        <img src={tachieImages[index]} alt={`tachie_${index + 1}`} style={{width:200, height:200}}/>
+        <button onClick={() => setIndex((i) => (i - 1 + tachieImages.length) % tachieImages.length)}>上一张</button>
+        <button onClick={() => setIndex((i) => (i + 1) % tachieImages.length)}>下一张</button>
+        </div>
       </div>
     )
   }

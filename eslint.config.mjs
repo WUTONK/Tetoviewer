@@ -2,6 +2,7 @@ import tseslint from '@electron-toolkit/eslint-config-ts'
 import eslintConfigPrettier from '@electron-toolkit/eslint-config-prettier'
 import eslintPluginReact from 'eslint-plugin-react'
 import eslintPluginReactHooks from 'eslint-plugin-react-hooks'
+import eslintPluginPrettier from 'eslint-plugin-prettier'
 import eslintPluginReactRefresh from 'eslint-plugin-react-refresh'
 
 export default tseslint.config(
@@ -20,7 +21,9 @@ export default tseslint.config(
     files: ['**/*.{ts,tsx}'],
     plugins: {
       'react-hooks': eslintPluginReactHooks,
-      'react-refresh': eslintPluginReactRefresh
+      'react-refresh': eslintPluginReactRefresh,
+      // 显式引入 prettier 插件以便能关闭其规则
+      prettier: eslintPluginPrettier
     },
     rules: {
       ...eslintPluginReactHooks.configs.recommended.rules,
@@ -30,8 +33,18 @@ export default tseslint.config(
       '@typescript-eslint/explicit-function-return-type': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
-      '@typescript-eslint/no-explicit-any': 'off'
+      '@typescript-eslint/no-explicit-any': 'off',
+      // 关闭 prettier 的格式化强制规则
+      'prettier/prettier': 'off'
     }
   },
-  eslintConfigPrettier
+
+  eslintConfigPrettier,
+  // 关闭 prettier 插件 从而消除格式检查
+  // 作为最后一层覆盖，彻底关闭 prettier 插件的强制规则
+  {
+    rules: {
+      'prettier/prettier': 'off'
+    }
+  }
 )

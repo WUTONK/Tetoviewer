@@ -12,6 +12,8 @@ import nikeland2 from './assets/img/acc/nike/nikeland_laugh.jpg'
 
 
 import { Percent } from 'antd/es/progress/style';
+import { Flex } from 'antd';
+import Column from 'antd/es/table/Column';
 
 function App(): React.JSX.Element {
   const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
@@ -186,7 +188,7 @@ function App(): React.JSX.Element {
         <Layout style={{ flex: 1, display: 'flex', flexDirection: 'column', margin: 20 }}>
           {/* 进度条 */}
           <div style={{ display:'flex', alignItems: 'center' }}>
-              <Progress percent={loadingProgress} showInfo={true} format={Percent => loadingProgress + "%" } style={{width:300}}></Progress>
+              <Progress percent={loadingProgress} showInfo={true} format={() => loadingProgress + "%" } style={{width:300}}></Progress>
               <Spin spinning={loading} style={{marginLeft:30}}></Spin>
           </div>
         </Layout>
@@ -205,6 +207,7 @@ function App(): React.JSX.Element {
           import: 'default',
         })
       ) as string[];
+      // 排序数组 使用本地化排序来正确排序 unicode 字符
       tachieImages.sort((a, b) => a.localeCompare(b));
 
       const [index, setIndex] = useState(0);
@@ -216,11 +219,22 @@ function App(): React.JSX.Element {
         </div>
 
         {/* 画廊 */}
-        <div>
-        <img src={tachieImages[index]} alt={`tachie_${index + 1}`} style={{width:200, height:200}}/>
-        <button onClick={() => setIndex((i) => (i - 1 + tachieImages.length) % tachieImages.length)}>上一张</button>
-        <button onClick={() => setIndex((i) => (i + 1) % tachieImages.length)}>下一张</button>
-        </div>
+        <Layout style={{display: Flex, flexDirection: 'row'}}>
+          {/* 方框画廊 */}
+          <Layout style={{flex:1}}>
+            <div>
+              <img src={tachieImages[index]} alt={`tachie_${index + 1}`} style={{width:200, height:200}}/>
+              <Button onClick={() => setIndex((i) => (i - 1 + tachieImages.length) % tachieImages.length)}>上一张</Button>
+              <Button onClick={() => setIndex((i) => (i + 1) % tachieImages.length)}>下一张</Button>
+            </div>
+          </Layout>
+
+          {/* 宽画廊 */}
+          {/* 做成有左右切换按钮 且可以自动引入并识别 wide 标识尾缀的 */}
+          <Layout style={{flex:3}}>
+            <button style={{width:'100%'}}>111</button>
+          </Layout>
+        </Layout>
       </div>
     )
   }

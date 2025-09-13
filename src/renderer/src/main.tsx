@@ -5,10 +5,12 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App'
 import Noti from './Noti'
+import Img from './Img'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    {/* <App /> */}
     {/* <Noti></Noti> */}
+    <Img/>
   </StrictMode>
 )
